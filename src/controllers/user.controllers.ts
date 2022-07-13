@@ -25,10 +25,10 @@ const listUserByIdController = async (req: Request, res: Response) => {
 
 const updateUserController = async (req: Request, res: Response) => {
   const userId = req.params.userId;
-  const { password } = req.body;
-  const updated = await updateUSerService({ userId, password });
+  const { name, email, password } = req.body;
+  const updated = await updateUSerService(userId, { name, email, password });
   return res.status(200).json({
-    message: "Password updated with success!",
+    message: "Updated with success!",
   });
 };
 

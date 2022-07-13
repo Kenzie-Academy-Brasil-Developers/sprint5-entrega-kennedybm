@@ -11,6 +11,7 @@ export interface IUserlogin {
 }
 
 export interface IUserupdate {
-  password: string;
-  userId: string;
+  name?: string;
+  email?: string;
+  password?: string;
 }

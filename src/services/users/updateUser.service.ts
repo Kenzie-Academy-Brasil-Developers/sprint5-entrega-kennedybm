@@ -4,21 +4,21 @@ import { AppError } from "../../errors/AppError";
 import { IUserupdate } from "../../interfaces/users";
 import { hash, compare } from "bcryptjs";
 
-const updateUSerService = async ({
-  userId,
-  password,
-}: IUserupdate): Promise<boolean> => {
+const updateUSerService = async (
+  userId: string,
+  { name, email, password }: IUserupdate
+): Promise<boolean> => {
   const userRepository = AppDataSource.getRepository(User);
 
   const user = await userRepository.findOneBy({ id: userId });
 
-  if (await compare(password, user!.password)) {
-    throw new AppError("Inform a different password!");
+  if (!user) {
+    throw new AppError("User not found", 404);
   }
 
-  const pwdHash = await hash(password, 10);
+  Object.assign(user, { name, email, password });
 
-  await userRepository.update(user!.id, { password: pwdHash });
+  await userRepository.update(user.id, user);
 
   return true;
 };
